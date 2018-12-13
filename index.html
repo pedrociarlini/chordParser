@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<title>TJCE Application</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/mainSvn.css">
+</head>
+<body>
+	<div class="container-fluid" id="leitorTrello">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span class="h2">Regras de Acesso do SVN</span>
+					</div>
+					<div class="panel-body">
+					
+						<br>
+						<button onclick="">Transpor</button>
+
+						Acordes originais:
+						<textarea id="acordes" rows="7" cols="100"></textarea>
+						Acordes resultado:
+						<textarea id="resultado" rows="7" cols="100"></textarea>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/mainChords.js"></script>
+	<script>
+		const tratador = new AccessRulesHelper();
+	</script>
+</body>
+</html>
