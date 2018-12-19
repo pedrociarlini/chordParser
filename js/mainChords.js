@@ -41,22 +41,25 @@ function ChordsParser () {
 		const linhas = texto.split("\n");
 		for (let numLinha in linhas) {
 			const linha = linhas[numLinha];
-			const palavras = linha.split("\n");
 			let temNota = false;
 			let acordes = [];
 			console.log("Tratando linha: " + linha);
+			const palavras = linha.split(" ");
 			for (let numPal in palavras) {
-				const palavra = palavras[numPal].replace(/\|/g, " ");
-				let ehNota = false;
-				for(let nota in this.notasExistentes) {
-					if (palavra.startsWith(nota)) {
-						ehNota = true;
-						temNota = true;
-						break;
+				const palavra = palavras[numPal].replace(/\|/g, " ").trim();
+				if (palavra.trim().length > 0) {
+					console.log("\t> Tratando palavra: [[" + palavra + "]]");
+					let ehNota = false;
+					for(let nota in this.notasExistentes) {
+						if (palavra.startsWith(nota)) {
+							ehNota = true;
+							temNota = true;
+							break;
+						}
 					}
-				}
-				if (ehNota) {
-					acordes.push(palavra);
+					if (ehNota) {
+						acordes.push(palavra);
+					}
 				}
 			}
 			if (temNota) {
@@ -72,8 +75,9 @@ function ChordsParser () {
 		this.transporNota("E", -5);
 
 		const resultPanel = $(elementSelector);
-		for (let linha in this.dados.linhasOriginais) {
-			resultPanel.append(linha.toString());
+		for (let numLinha in this.dados.linhasOriginais) {
+			const linha = this.dados.linhasOriginais[numLinha];
+			resultPanel.append(linha.toString() + "\n");
 		}
 	}
 
