@@ -19,17 +19,43 @@
 						<br>
 						Acordes originais:
 						<br>
-						<textarea id="acordes" rows="7" cols="100">Pt1:
-|C7M         |   Dm7      |...
-|C7M         | Dm7  Em7   |Fm7  Bb7(9)|
-Ref:
-|C7M         |  Dm7       |    Em7    |Dm7     |x2
-|F7M  G7(4/9)|Em7  A7(b13)|Dm7 Bb7(b5/9)|  C7M |
-|F7M  G7(4/9)|Em7  A7(b13)|Dm7   G7(4/9)|  C7M |							
+						<textarea id="acordes" rows="7" cols="100">Pt1: |A    | B   E|
+     |E  A | E   A| D     F#m| B     E|
+Ref: |A  E | E   A| A % D /D#| E     A|
+R.2: |A  E | E   A|A7 % D /D#| E   C#7| F#m |
+     |B    | E    |
+Pt3: |A    | D F#m|Bm     A  | B7  E    |Fim :A|
+	
 						</textarea>
 						<br>
-						<button onclick="tratador.transpor('#resultado');">Transpor</button><br>
-						Acordes resultado:
+						Semitons <select id="semitons">
+							<option>-11</option>
+							<option>-10</option>
+							<option>-9</option>
+							<option>-8</option>
+							<option>-7</option>
+							<option>-6</option>
+							<option>-5</option>
+							<option>-4</option>
+							<option>-3</option>
+							<option>-2</option>
+							<option>-1</option>
+							<option>1</option>
+							<option selected="true">2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+						</select>
+						<button onclick="tratador.transpor('#acordes', '#resultado', '#semitons');">Transpor</button>
+						<br>
+
+						Acordes transpostos:
 						<br>
 						<textarea id="resultado" rows="7" cols="100"></textarea>
 					</div>
@@ -43,7 +69,6 @@ Ref:
 	<script src="js/mainChords.js"></script>
 	<script>
 		const tratador = new ChordsParser();
-		tratador.tratar($("#acordes").val());
 	</script>
 </body>
 </html>
