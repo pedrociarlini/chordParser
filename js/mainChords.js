@@ -6,7 +6,8 @@ function ChordsParser () {
 		// lista de uma sequencia que contém uma sequencia de notas
 		// [0] = ["<nota1>", "<nota2>", "<nota3>"]...
 		linhasOriginais : [],
-		textoOriginal : ""
+		textoOriginal : "",
+		textoParsed : ""
 	};
 	this.notasExistentes = {"C" : 1, "C#": 2, "Db": 2, "D": 3, "D#": 4, "Eb": 4, "E": 5, "F": 6,
 			"F#" : 7, "Gb" : 7, "G" : 8, "G#" : 9, "Ab" : 9, "A" : 10, "A#" : 11, "Bb" : 11, "B" : 12 };
@@ -54,10 +55,11 @@ function ChordsParser () {
 
 	this.tratar = function(texto) {
 		this.dados.textoOriginal = texto;
+		this.dados.textoParsed = this.dados.textoOriginal;
 		// TODO Reconhecer acordes em texto e fazero parse dos mesmos.
 		// Guardar todos os acordes em sequencia, para cada linha
 		const linhas = texto.split("\n");
-
+		let numAcorde = 0;
 		for (let numLinha in linhas) {
 			let linha = linhas[numLinha];
 			let temNota = false;
@@ -69,16 +71,16 @@ function ChordsParser () {
 				const palavra = palavras[numPal];
 				if (palavra.trim().length > 0) {
 					// console.log("\t> Tratando palavra: [[" + palavra + "]]");
-					let ehNota = false;
-					for(let nota in this.notasExistentes) {
-						if (palavra.startsWith(nota)) {
-							ehNota = true;
-							temNota = true;
-							break;
-						}
-					}
+					// TODO considerar casos de baixo alterado: A/E (Láá com baixo em Mi)
+
+					let ehNota = this.verificaSeEhNota(palavra);
+					if (ehNota) temNota = true;
+
 					if (ehNota) {
+						numAcorde++;
 						acordes.push(palavra);
+						// Numero do acorde em questão
+						this.dados.textoParsed = this.dados.textoParsed.replace(palavra, this.mascaraNumAcorde(numAcorde))
 					}
 				}
 			}
@@ -91,6 +93,24 @@ function ChordsParser () {
 		return this.dados;
 	}
 
+	this.verificaSeEhNota = function(palavra) {
+		var ehNota = false;
+		// Verificando caracteres impossívels em acordes
+		if (palavra && palavra.includes("i")) return false;
+		
+		for(let nota in this.notasExistentes) {
+			if (palavra.startsWith(nota)) {
+				ehNota = true;
+				break;
+			}
+		}
+		return ehNota;
+	}
+
+	this.mascaraNumAcorde = function(numAcorde) {
+		return "[[##!" + numAcorde + "]]";
+	}
+
 	this.transpor = function(origenSelector, resultSelector, semitonsSelector) {
 		this.tratar($(origenSelector).val());
 
@@ -98,20 +118,21 @@ function ChordsParser () {
 		console.log(semitons + " semitons")
 		const resultPanel = $(resultSelector);
 		
-		let result = this.dados.textoOriginal;
+		let result = this.dados.textoParsed;
 		let acordesTranspostos = [];
+		let numAcorde = 0;
 		for (let numLinha in this.dados.linhasOriginais) {
 			const linha = this.dados.linhasOriginais[numLinha];
-			for (let numAcorde in linha) {
-				const acorde = linha[numAcorde];
-				if (!acordesTranspostos.includes(acorde)) {
+			for (let indAcorde in linha) {
+				const acorde = linha[indAcorde];
+				numAcorde++;
+				// if (!acordesTranspostos.includes(acorde)) {
 					const acordeTransposto = this.transporNota(acorde, semitons);
-					result = result.replace(new RegExp(acorde + " ", 'g'), acordeTransposto + " ");
+					result = result.replace(this.mascaraNumAcorde(numAcorde), acordeTransposto);
 					acordesTranspostos.push(acorde);
-				}
+				//}
 			}
 		}
 		resultPanel.val(result);
 	}
-
 };
