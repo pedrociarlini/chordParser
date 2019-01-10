@@ -9,8 +9,8 @@ function ChordsParser () {
 		textoOriginal : "",
 		textoParsed : ""
 	};
-	this.notasExistentes = {"C" : 1, "C#": 2, "Db": 2, "D": 3, "D#": 4, "Eb": 4, "E": 5, "F": 6,
-			"F#" : 7, "Gb" : 7, "G" : 8, "G#" : 9, "Ab" : 9, "A" : 10, "A#" : 11, "Bb" : 11, "B" : 12 };
+	this.notasExistentes = {"C" : 1, "Db": 2, "C#": 2, "D": 3, "D#": 4, "Eb": 4, "E": 5, "F": 6,
+			"Gb" : 7, "F#" : 7, "G" : 8, "Ab" : 9, "G#" : 9, "A" : 10, "A#" : 11, "Bb" : 11, "B" : 12 };
 	this.grausExistentes = {};
 
 	for (let nota in this.notasExistentes) {
@@ -49,7 +49,7 @@ function ChordsParser () {
 		// console.log(grauInicial + " = grauInicial | grauFinal = " + (grauFinal - 1) + " " + result);
 
 		result = notaOriginal.replace(nota, result);
-		console.log("Nota " + nota + ", transpondo " + intervalo + " fica " + result);
+		// console.log("Nota " + nota + ", transpondo " + intervalo + " fica " + result);
 		return result;
 	}
 
@@ -96,7 +96,9 @@ function ChordsParser () {
 	this.verificaSeEhNota = function(palavra) {
 		var ehNota = false;
 		// Verificando caracteres impossívels em acordes
-		if (palavra && palavra.includes("i")) return false;
+		for (let letra of ["i", "z", "n", "t", "x", "h", "s"]) {
+			if (palavra.includes(letra)) return false;
+		}
 		
 		for(let nota in this.notasExistentes) {
 			if (palavra.startsWith(nota)) {
