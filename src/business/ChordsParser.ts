@@ -91,8 +91,7 @@ export default class ChordsParser {
 
             linha = linha.replace(/\|/g, " ").trim();
             const palavras = linha.split(" ");
-            for (const numPal in palavras) {
-                const palavra = palavras[numPal];
+            for (const palavra of palavras) {
                 if (palavra.trim().length > 0) {
                     const ehNota = this.verificaSeEhNota(palavra);
                     if (ehNota) temNota = true;
@@ -101,7 +100,7 @@ export default class ChordsParser {
                         numAcorde++;
                         acordes.push(palavra);
                         // Numero do acorde em questão
-                        this.dados.textoParsed = this.dados.textoParsed.replace(palavra, this.mascaraNumAcorde(numAcorde));
+                        this.dados.textoParsed = this.dados.textoParsed.replace(" " + palavra, " " + this.mascaraNumAcorde(numAcorde));
                     }
                 }
             }

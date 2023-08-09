@@ -50,18 +50,17 @@ import ChordsParser from "@/business/ChordsParser";
 @Component({ components: {} })
 export default class HomePage extends Vue {
     chordsParserBuzz = new ChordsParser();
-    musicaOrigem = `Int: | G4 | %  |  C  |C/B | Am | Em  | F |Em Am| Bb | G |
-     | G# | Bb |  C4 | %  |
-Pt1: | Fm | Bb | Gm  | Cm | Fm |D   G| Cm| Eb  |
-     | G# |G#4+| Gm  | Cm | Fm |D   G| Cm| Cm7 |
-Pt2: | G# | %  | Gm  | %  | Cm | F   | Bb|  G  |
-Ref: |  C |C/B | Am  | Em | F  |Em Am| Dm|E  G7|
-     |  C |C/B | Am  | Em | F  |Em Am| Bb|  G  |
-Pont:|  C |  % |C/Bb | %  |F/A | %   | G#| Bb  |
-Solo:| Cm |Cm/B|Cm/Bb|F/A | G# | Bb  | C4| C   |
-*Pt1, *Pt2, *Ref
-Fim: | G# | Bb | C4  | C  |
-`;
+    musicaOrigem = `Tom: A (original E)
+Int: | - | A | % |
+Pt1: | A | % | % | % | C | D |
+     | A | % | D | C | E | % |
+Ref: | D | % | A | % | D | % | E | % |
+     | D | % | A | % | D | C | E | % |
+Pt2: | D | % | A | % | B | D | % |
+Fim: | A | D |x5     | D | A |
++IDÉID:
+Solo:| B| D | A | % |x2
++música toda sem Int nem Solo.`;
     musicaReusltado = "";
     semitons = 2;
 
