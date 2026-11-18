@@ -39,18 +39,17 @@
                     </div>
                 </div>
             </div>
+            <small class="text-muted">Versão {{ versao }}</small>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref } from "vue";
 import ChordsParser from "@/business/ChordsParser";
 
-@Component({ components: {} })
-export default class HomePage extends Vue {
-    chordsParserBuzz = new ChordsParser();
-    musicaOrigem = `Tom: A (original E)
+const chordsParserBuzz = new ChordsParser();
+const musicaOrigem = ref(`Tom: A (original E)
 Int: | - | A | % |
 Pt1: | A | % | % | % | C | D |
      | A | % | D | C | E | % |
@@ -60,14 +59,13 @@ Pt2: | D | % | A | % | B | D | % |
 Fim: | A | D |x5     | D | A |
 +IDÉID:
 Solo:| B| D | A | % |x2
-+música toda sem Int nem Solo.`;
-    musicaReusltado = "";
-    semitons = 2;
++música toda sem Int nem Solo.`);
+const musicaReusltado = ref("");
+const semitons = ref(2);
+const versao = __APP_VERSION__;
 
-    transpor() {
-        let result = this.chordsParserBuzz.transpor(this.musicaOrigem, this.semitons);
-        this.musicaReusltado = result;
-    }
+function transpor() {
+    musicaReusltado.value = chordsParserBuzz.transpor(musicaOrigem.value, semitons.value);
 }
 </script>
 <style>
