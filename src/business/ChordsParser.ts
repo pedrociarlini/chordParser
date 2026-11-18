@@ -47,8 +47,14 @@ export default class ChordsParser {
         if (intervalo < -11 || intervalo > 11) {
             throw new Error("Intervalo fora do permitido");
         }
-        let result = "";
+        const partes: string[] = [];
         for (const notaParcial of notaOriginal.split("/")) {
+            // Acorde só com baixo (ex.: "/E"): a parte antes da barra é vazia
+            if (notaParcial === "") {
+                partes.push("");
+                continue;
+            }
+
             let nota = notaParcial.substring(0, 2);
             if (nota.substring(1, 2) != "#" && nota.substring(1, 2) != "b") {
                 nota = notaParcial.substring(0, 1);
@@ -69,11 +75,10 @@ export default class ChordsParser {
 
             let resultParcial = this.grausExistentes[grauFinal];
             resultParcial = resultParcial + notaParcial.substring(nota.length);
-            if (result != "") result += "/";
-            result += resultParcial;
+            partes.push(resultParcial);
         }
 
-        return result;
+        return partes.join("/");
     }
 
     tratar(texto: string) {
@@ -113,8 +118,11 @@ export default class ChordsParser {
             if (palavra.includes(letra)) return false;
         }
 
+        // Acorde só com baixo (ex.: "/E")
+        const semBarra = palavra.startsWith("/") ? palavra.substring(1) : palavra;
+
         for (const nota in this.notasExistentes) {
-            if (palavra.startsWith(nota)) {
+            if (semBarra.startsWith(nota)) {
                 ehNota = true;
                 break;
             }
