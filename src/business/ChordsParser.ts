@@ -68,7 +68,7 @@ export default class ChordsParser {
             }
 
             let resultParcial = this.grausExistentes[grauFinal];
-            resultParcial = notaParcial.replace(nota, resultParcial);
+            resultParcial = resultParcial + notaParcial.substring(nota.length);
             if (result != "") result += "/";
             result += resultParcial;
         }
@@ -84,30 +84,24 @@ export default class ChordsParser {
         // Guardar todos os acordes em sequencia, para cada linha
         const linhas = texto.split("\n");
         let numAcorde = 0;
-        for (const numLinha in linhas) {
-            let linha = linhas[numLinha];
-            let temNota = false;
-            const acordes = [];
+        const linhasParsed: string[] = [];
+        for (const linha of linhas) {
+            const acordes: string[] = [];
 
-            linha = linha.replace(/\|/g, " ").trim();
-            const palavras = linha.split(" ");
-            for (const palavra of palavras) {
-                if (palavra.trim().length > 0) {
-                    const ehNota = this.verificaSeEhNota(palavra);
-                    if (ehNota) temNota = true;
-
-                    if (ehNota) {
-                        numAcorde++;
-                        acordes.push(palavra);
-                        // Numero do acorde em questão
-                        this.dados.textoParsed = this.dados.textoParsed.replace(" " + palavra, " " + this.mascaraNumAcorde(numAcorde));
-                    }
-                }
-            }
-            if (temNota) {
+            // Substitui cada palavra que é acorde (inclusive com baixo, ex.: C/E) pela máscara, mantendo o restante da linha intacto
+            linhasParsed.push(
+                linha.replace(/[^\s|]+/g, (palavra) => {
+                    if (!this.verificaSeEhNota(palavra)) return palavra;
+                    numAcorde++;
+                    acordes.push(palavra);
+                    return this.mascaraNumAcorde(numAcorde);
+                })
+            );
+            if (acordes.length > 0) {
                 this.dados.linhasOriginais.push(acordes);
             }
         }
+        this.dados.textoParsed = linhasParsed.join("\n");
 
         return this.dados;
     }
